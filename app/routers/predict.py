@@ -1,12 +1,13 @@
-from fastapi import APIRouter, Query
+from fastapi import APIRouter, Depends, Query
 from app.model import predict_flood_risk, FEATURES, is_model_loaded, get_registry_status
 from app.schemas import NodePredictRequest, NodePredictResponse
+from app.security import require_ai_service_key
 import pandas as pd
 import numpy as np
 from collections import OrderedDict
 from datetime import date
 
-router = APIRouter()
+router = APIRouter(dependencies=[Depends(require_ai_service_key)])
 
 MONTHS = [
     'January', 'February', 'March', 'April', 'May', 'June',
